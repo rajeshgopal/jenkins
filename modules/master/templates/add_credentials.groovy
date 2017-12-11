@@ -13,10 +13,7 @@ import hudson.plugins.sshslaves.*
 global_domain = Domain.global()
 credentials_store = Jenkins.instance.getExtensionList('com.cloudbees.plugins.credentials.SystemCredentialsProvider')[0].getStore()
 
-      println "--> Create credentials for user  with the password from"
-      creds = new UsernamePasswordCredentialsImpl(CredentialsScope.GLOBAL,
-                                                  'artifactoryuser',
-                                                  'readonlyuserforartifactory',
-                                                  'artifactoryuser',
-                                                  'jumboma')
-      credentials_store.addCredentials(global_domain, creds)
+<% @input.each do |value| %>
+cred = new UsernamePasswordCredentialsImpl(CredentialsScope.GLOBAL,'<%= value['credentialid'] %>','<%= value['description'] %>','<%= value['userid'] %>','<%= value['password'] %>')
+credentials_store.addCredentials(global_domain, cred)
+<% end %>
